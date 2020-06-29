@@ -1,4 +1,4 @@
-+ <template>
+<template>
   <div class="container">
     <table class="table table-hover">
       <thead class="thead-light">
@@ -13,51 +13,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Title1</td>
-          <td>Content1</td>
-          <td>Ichiro</td>
+        <tr v-for="task in tasks" :key="task">
+          <th scope="row">{{ task.id }}</th>
+          <td>{{ task.title }}</td>
+          <td>{{ task.content }}</td>
+          <td>{{ task.person_in_charge }}</td>
           <td>
-            <!-- /tasks/:taskIdにアクセス -->
-            <router-link v-bind:to="{name:'task.show',params:{taskId:1}}">
+            <router-link v-bind:to="{name: 'task.show', params: {taskId: task.id }}">
               <button class="btn btn-primary">Show</button>
             </router-link>
           </td>
           <td>
-            <router-link v-bind:to="{name:'task.edit',params:{taskId:2}}">
+            <router-link v-bind:to="{name: 'task.edit', params: {taskId: task.id }}">
               <button class="btn btn-success">Edit</button>
             </router-link>
-          </td>
-          <td>
-            <button class="btn btn-danger">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Title2</td>
-          <td>Content2</td>
-          <td>Jiro</td>
-          <td>
-            <button class="btn btn-primary">Show</button>
-          </td>
-          <td>
-            <button class="btn btn-success">Edit</button>
-          </td>
-          <td>
-            <button class="btn btn-danger">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Title3</td>
-          <td>Content3</td>
-          <td>Saburo</td>
-          <td>
-            <button class="btn btn-primary">Show</button>
-          </td>
-          <td>
-            <button class="btn btn-success">Edit</button>
           </td>
           <td>
             <button class="btn btn-danger">Delete</button>
@@ -67,7 +36,28 @@
     </table>
   </div>
 </template>
- 
- <script>
-export default {};
+
+<script>
+export default {
+  data: function() {
+    return {
+      tasks: []
+    };
+  },
+  methods: {
+    //    タスク一覧取得APIにリクエストして
+    // そのレスポンスを先ほどの tasks の中に入れています。
+    // （このメソッドで先ほど話したaxiosを利用してリクエストしています）
+    getTasks() {
+      axios.get("/api/tasks").then(res => {
+        this.tasks = res.data;
+      });
+    }
+  },
+  //   そして、画面描画時にこの getTasks() メソッドが実行されるように、
+  // mounted() でメソッドを呼び出しています。
+  mounted() {
+    this.getTasks();
+  }
+};
 </script>
