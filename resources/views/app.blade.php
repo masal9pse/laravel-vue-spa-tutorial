@@ -17,7 +17,7 @@
 <body>
  <div id="app">
   <header-component></header-component>
-  {{-- vue-routerで 指定したパスが入る--}}
+
   <router-view></router-view>
  </div>
  <!-- Scripts -->
