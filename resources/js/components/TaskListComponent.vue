@@ -18,10 +18,10 @@
           <th scope="row">{{ task.id }}</th>
           <td>{{ task.title }}</td>
           <td>
-            <button class="btn btn-dark">add</button>
+            <button class="btn btn-dark" @click="addCount(task.index)">add</button>
           </td>
           <td>
-            <button class="btn btn-warning">minus</button>
+            <button class="btn btn-warning" @click="minusCount(task.index)">minus</button>
           </td>
           <td>
             <router-link v-bind:to="{name: 'task.show', params: {taskId: task.id }}">
@@ -61,6 +61,12 @@ export default {
       axios.delete("/api/tasks/" + id).then(res => {
         this.getTasks();
       });
+    },
+    addCount(index) {
+      this.count++;
+    },
+    minusCount(index) {
+      this.count--;
     }
   },
   mounted() {
