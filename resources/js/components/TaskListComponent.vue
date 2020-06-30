@@ -5,19 +5,24 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Title</th>
-          <th scope="col">Content</th>
-          <th scope="col">Person In Charge</th>
+          <th scope="col">+</th>
+          <th scope="col">-</th>
           <th scope="col">Show</th>
           <th scope="col">Edit</th>
           <th scope="col">Delete</th>
+          <th scope="col">vacation</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="task in tasks" :key="task">
+        <tr v-for="(task,index) in tasks" :key="index">
           <th scope="row">{{ task.id }}</th>
           <td>{{ task.title }}</td>
-          <td>{{ task.content }}</td>
-          <td>{{ task.person_in_charge }}</td>
+          <td>
+            <button class="btn btn-dark">add</button>
+          </td>
+          <td>
+            <button class="btn btn-warning">minus</button>
+          </td>
           <td>
             <router-link v-bind:to="{name: 'task.show', params: {taskId: task.id }}">
               <button class="btn btn-primary">Show</button>
@@ -31,6 +36,7 @@
           <td>
             <button class="btn btn-danger" @click="deleteTask(task.id)">Delete</button>
           </td>
+          <td>{{count}}</td>
         </tr>
       </tbody>
     </table>
@@ -41,13 +47,11 @@
 export default {
   data: function() {
     return {
-      tasks: []
+      tasks: [],
+      count: 0
     };
   },
   methods: {
-    //    タスク一覧取得APIにリクエストして
-    // そのレスポンスを先ほどの tasks の中に入れています。
-    // （このメソッドで先ほど話したaxiosを利用してリクエストしています）
     getTasks() {
       axios.get("/api/tasks").then(res => {
         this.tasks = res.data;
@@ -59,8 +63,6 @@ export default {
       });
     }
   },
-  //   そして、画面描画時にこの getTasks() メソッドが実行されるように、
-  // mounted() でメソッドを呼び出しています。
   mounted() {
     this.getTasks();
   }
