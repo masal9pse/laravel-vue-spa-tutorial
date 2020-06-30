@@ -35,4 +35,9 @@ class TaskController extends Controller
 
   return $task;
  }
+
+ // public function addCount(Request $request)
+ // {
+ //  $task = new Task();
+ // }
 }

@@ -18,10 +18,10 @@
           <th scope="row">{{ task.id }}</th>
           <td>{{ task.title }}</td>
           <td>
-            <button class="btn btn-dark" @click="addCount(task.index)">add</button>
+            <button class="btn btn-dark" @click="task.count++">add</button>
           </td>
           <td>
-            <button class="btn btn-warning" @click="minusCount(task.index)">minus</button>
+            <button class="btn btn-warning" @click="task.count--">minus</button>
           </td>
           <td>
             <router-link v-bind:to="{name: 'task.show', params: {taskId: task.id }}">
@@ -36,7 +36,7 @@
           <td>
             <button class="btn btn-danger" @click="deleteTask(task.id)">Delete</button>
           </td>
-          <td>{{count}}</td>
+          <td>{{task.count}}</td>
         </tr>
       </tbody>
     </table>
@@ -47,27 +47,31 @@
 export default {
   data: function() {
     return {
-      tasks: [],
-      count: 0
+      tasks: []
     };
   },
   methods: {
     getTasks() {
       axios.get("/api/tasks").then(res => {
         this.tasks = res.data;
+        console.log(this.tasks);
       });
     },
     deleteTask(id) {
       axios.delete("/api/tasks/" + id).then(res => {
         this.getTasks();
       });
-    },
-    addCount(index) {
-      this.count++;
-    },
-    minusCount(index) {
-      this.count--;
     }
+    // addCount(count) {
+    //   axios.post("/api/tasks/" + count).then(res => {
+    //     res.data.count++;
+    //   });
+    // },
+    // minusCount(todo) {
+    //   axios.post("/api/tasks/" + id).then(res => {
+    //     res.data.count--;
+    //   });
+    // }
   },
   mounted() {
     this.getTasks();
